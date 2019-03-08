@@ -3,13 +3,27 @@ import List from './List';
 import Create from './Create';
 import ListItem from './ListItem';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      items: [
+        { name: 'Fred', likes:0 },
+        { name: 'Harrison', likes:0 }
+      ],
       mostLiked: { likes: 0 }
     }
+    this.addItem = this.addItem.bind(this);
+  }
+
+  addItem(nam) {
+    this.setState({ items: this.state.items.concat({name:nam, likes:0}) });
+  }
+
+  deleteItem = (index)=>{
+    let items = [...this.state.items];
+    items.splice(index, 1);
+    this.setState({items})
   }
 
   /*TODO
@@ -37,9 +51,11 @@ class App extends Component {
     return (
       <div id="mainApp" className="center vertical">
         {mostLiked.likes > 0 && <div id="mostLiked"><div>Most Liked:</div><ListItem number={'hey'} item={mostLiked}/></div>}
-        <div>SHOULD DISPLAY CREATE</div>
-        <div>SHOULD DISPLAY LIST</div>
+        <div><Create addItem={this.addItem}/></div>
+        <div><List items={this.state.items} deleteItem={this.deleteItem} updateItem = {this.updateItem}/></div>
       </div>
-      )
+    );
   }
 }
+
+export default App;
